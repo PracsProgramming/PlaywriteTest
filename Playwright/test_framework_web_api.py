@@ -1,28 +1,40 @@
-from playwright.sync_api import Playwright, expect
+import json
 
-from PlaywriteTest.Playwright.utils.apibase import APIUtils
+import pytest
+from playwright.sync_api import Playwright
 
+from POM_Pattern.LoginPage import  LoginPageClass
+from utils.apibaseFramework import APIUtilsFramework
 
-def test_e2e_web_api(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
+#json file  -> util ->access into test.
+with open("Data/credentials.json") as f:
+    test_data = json.load(f)
+    # print(test_data)
+    user_credentials_list = test_data["user_credentials"]
+    # print(user_credentials)
+
+@pytest.mark.parametrize('user_credentials',user_credentials_list)
+def test_e2e_web_api(playwright: Playwright,browserInstance,user_credentials):
+    user_Email = user_credentials["userEmail"]
+    user_Password = user_credentials["userPassword"]
+    # browser = playwright.chromium.launch(headless=False)
+    # context = browser.new_context()
+    # page = context.new_page()
 
     # create order
-    api_utils = APIUtils()
-    OrderId = api_utils.createOrder(playwright)
-
+    api_utils = APIUtilsFramework()
+    OrderId = api_utils.createOrder(playwright,user_credentials)
 
     #login
-    page.goto("https://rahulshettyacademy.com/client/")
-    page.get_by_placeholder("email@example.com").fill("rahulshetty@gmail.com")
-    page.get_by_placeholder("enter your passsword").fill("Iamking@000")
-    page.get_by_role("button",name="login").click()
+    loginPage = LoginPageClass(browserInstance)
+    loginPage.navigate()
+     #dashboard page
+    DashboardPage = loginPage.login(user_Email, user_Password)
+    #order history
+    OrdersHistoryPage = DashboardPage.selectOrdersNavLink()
 
-    page.get_by_role("button",name="ORDERS").click()
+    # order Details page
+    orderDetailsPage = OrdersHistoryPage.selectOrder(OrderId)
+    orderDetailsPage.verifyOrderMessage()
 
-    # order history
-    row = page.locator("tr").filter(has_text=OrderId)
-    row.get_by_role("button",name="View").click()
-    expect(page.locator(".tagline")).to_contain_text("Thank you for Shopping With Us")
-    # context.close()
+

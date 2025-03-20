@@ -1,8 +1,10 @@
 import time
 
+import pytest
 from playwright.sync_api import Page, Route, Playwright, expect
 
-from PlaywriteTest.Playwright.utils.apibase import APIUtils
+
+from utils.apibase import APIUtils
 
 fakepayloadresponse = {"data":[],"message":"No Orders"}
 
@@ -10,7 +12,7 @@ fakepayloadresponse = {"data":[],"message":"No Orders"}
 def intercept_request(route:Route):
     route.continue_(url="https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=67dab02cc019fb1ad62e6c2a")
 
-
+@pytest.mark.smoke
 def test_network_2(page: Page):
     # login
     page.goto("https://rahulshettyacademy.com/client")

@@ -13,9 +13,11 @@ order_payload = {
 class APIUtils:
 
     def get_token(self,playwright: Playwright):
+        user_Email = "rahulshetty@gmail.com"
+        user_Password = "Iamking@000"
         api_request_context = playwright.request.new_context(base_url="https://rahulshettyacademy.com")
         response = api_request_context.post("/api/ecom/auth/login",
-                                            data={"userEmail": "rahulshetty@gmail.com", "userPassword": "Iamking@000"})
+                                            data={"userEmail": user_Email, "userPassword": user_Password})
         assert response.ok
         responseBody = response.json()
         return responseBody["token"]

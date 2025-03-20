@@ -17,7 +17,7 @@ def test_playwrightShortCut(page:Page):
 def test_coreLocators(page:Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     page.get_by_label("username").fill("rahulshettyacademy")
-    page.get_by_label("password").fill("learning")
+    page.get_by_label("password").fill("learnifdfd")
     page.get_by_role("combobox").select_option("teach")
     page.locator("#terms").check()
     page.get_by_role("link",name="terms and conditions").click()
@@ -38,11 +38,11 @@ def test_firefoxBrowser(playwright: Playwright):
     page = browser.new_page()
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     page.get_by_label("username").fill("rahulshettyacademy")
-    page.get_by_label("password").fill("learning")
+    page.get_by_label("password").fill("learnifdfd")
     page.get_by_role("combobox").select_option("teach")
     page.locator("#terms").check()
     page.get_by_role("link", name="terms and conditions").click()
     page.get_by_role("button", name="Sign In").click()
-    # expect(page.get_by_text("incorrect username/password")).to_be_visible()
+    expect(page.get_by_text("incorrect username/password")).to_be_visible()
     time.sleep(10)
 

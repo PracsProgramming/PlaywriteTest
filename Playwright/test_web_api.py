@@ -1,6 +1,6 @@
 from playwright.sync_api import Playwright, expect
 
-from PlaywriteTest.Playwright.utils.apibase import APIUtils
+from utils.apibase import APIUtils
 
 
 def test_e2e_web_api(playwright: Playwright):
@@ -14,7 +14,7 @@ def test_e2e_web_api(playwright: Playwright):
 
 
     #login
-    page.goto("https://rahulshettyacademy.com/client/")
+    page.goto("https://rahulshettyacademy.com/client")
     page.get_by_placeholder("email@example.com").fill("rahulshetty@gmail.com")
     page.get_by_placeholder("enter your passsword").fill("Iamking@000")
     page.get_by_role("button",name="login").click()
@@ -25,4 +25,4 @@ def test_e2e_web_api(playwright: Playwright):
     row = page.locator("tr").filter(has_text=OrderId)
     row.get_by_role("button",name="View").click()
     expect(page.locator(".tagline")).to_contain_text("Thank you for Shopping With Us")
-    # context.close()
+    context.close()
